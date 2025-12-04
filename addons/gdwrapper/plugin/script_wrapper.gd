@@ -80,14 +80,17 @@ static func wrap_scripts(script_paths: PackedStringArray) -> String:
                     var return_type: String = get_type_string(method.return.type, method.return.usage)
                     result += "\n\nstatic func " + method.name + "("
                     var arg_list: PackedStringArray
+                    var typed_arg_list: PackedStringArray
                     for arg in method.args:
+                        arg_list.append(arg.name)
                         var arg_type: String = get_type_string(arg.type, arg.usage)
                         if arg_type.is_empty():
-                            arg_list.append(arg.name)
+                            typed_arg_list.append(arg.name)
                         else:
-                            arg_list.append(arg.name + ": " + arg_type)
+                            typed_arg_list.append(arg.name + ": " + arg_type)
                     var args: String = ", ".join(arg_list)
-                    result += args
+                    var typed_args: String = ", ".join(typed_arg_list)
+                    result += typed_args
                     if return_type.is_empty():
                         result += ") -> void:\n"
                         result += "\t" + global_name + "." + method.name + "(" + args + ")"
